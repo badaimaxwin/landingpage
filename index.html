@@ -91,7 +91,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 1;
+      z-index: 10;
     }
 
     /* Progress ring */
@@ -412,18 +412,34 @@
       right: 0;
       bottom: 0;
       background: rgba(0, 0, 0, 0.5);
-      z-index: -3;
+      z-index: 1;
       display: none;
+      pointer-events: none;
     }
 
     /* Mobile-specific styles */
+    @media screen and (max-width: 768px) {
+      .mobile-overlay {
+        display: block !important;
+      }
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+      .mobile-overlay {
+        display: block !important;
+      }
+    }
+
+    @media screen and (max-device-width: 768px) {
+      .mobile-overlay {
+        display: block !important;
+      }
+    }
+
+    /* Fallback untuk semua mobile */
     @media screen and (max-width: 768px), 
            screen and (max-device-width: 768px),
            (hover: none) and (pointer: coarse) {
-      
-      .mobile-overlay {
-        display: block;
-      }
 
       body {
         height: 100vh;
@@ -507,13 +523,11 @@
       .timer-value {
         cursor: pointer;
         -webkit-tap-highlight-color: rgba(0, 191, 255, 0.3);
-        tap-highlight-color: rgba(0, 191, 255, 0.3);
       }
 
       .control-btn,
       .speed-btn {
         -webkit-tap-highlight-color: rgba(0, 191, 255, 0.3);
-        tap-highlight-color: rgba(0, 191, 255, 0.3);
         touch-action: manipulation;
       }
 
@@ -778,6 +792,9 @@
         <button class="control-btn" id="soundBtn" title="Toggle Sound" aria-label="Toggle sound effects">
           <i class="fas fa-volume-up"></i>
         </button>
+        <button class="control-btn" id="debugBtn" title="Toggle Mobile Overlay" aria-label="Toggle mobile overlay for testing">
+          <i class="fas fa-mobile-alt"></i>
+        </button>
       </div>
     </div>
 
@@ -827,6 +844,7 @@
         this.resetBtn = document.getElementById('resetBtn');
         this.settingsBtn = document.getElementById('settingsBtn');
         this.soundBtn = document.getElementById('soundBtn');
+        this.debugBtn = document.getElementById('debugBtn');
         this.settingsPanel = document.getElementById('settingsPanel');
         this.targetInput = document.getElementById('targetInput');
         this.milestoneInput = document.getElementById('milestoneInput');
@@ -1028,6 +1046,21 @@
         this.playSound('click');
       }
 
+      toggleMobileOverlay() {
+        const overlay = document.querySelector('.mobile-overlay');
+        const isVisible = overlay.style.display === 'block' || window.getComputedStyle(overlay).display === 'block';
+        
+        if (isVisible) {
+          overlay.style.display = 'none';
+          console.log('🖥️ Mobile overlay disabled');
+        } else {
+          overlay.style.display = 'block';
+          console.log('📱 Mobile overlay enabled');
+        }
+        
+        this.playSound('click');
+      }
+
       updateSoundButton() {
         this.soundBtn.innerHTML = this.soundEnabled ? 
           '<i class="fas fa-volume-up"></i>' : 
@@ -1113,6 +1146,7 @@
         this.resetBtn.addEventListener('click', () => this.resetTimer());
         this.settingsBtn.addEventListener('click', () => this.toggleSettings());
         this.soundBtn.addEventListener('click', () => this.toggleSound());
+        this.debugBtn.addEventListener('click', () => this.toggleMobileOverlay());
         
         // Timer value click to set custom target
         this.timerElement.addEventListener('click', () => this.setCustomTarget());
@@ -1268,6 +1302,13 @@
       static optimizeForMobile() {
         if (!this.isMobile()) return;
         
+        // Force mobile overlay to show
+        const mobileOverlay = document.querySelector('.mobile-overlay');
+        if (mobileOverlay) {
+          mobileOverlay.style.display = 'block';
+          console.log('📱 Mobile overlay activated via JavaScript');
+        }
+        
         // Prevent zoom on double tap
         document.addEventListener('touchend', function(e) {
           const now = new Date().getTime();
@@ -1337,13 +1378,25 @@
       
       if (MobileDetector.isMobile()) {
         console.log('📱 Mobile optimizations active');
+        console.log('Screen size:', window.innerWidth + 'x' + window.innerHeight);
+        console.log('Touch support:', 'ontouchstart' in window);
+        console.log('Max touch points:', navigator.maxTouchPoints);
+        console.log('User agent:', navigator.userAgent);
         console.log('Mobile gestures:');
         console.log('- Double tap timer: Pause/Resume');
         console.log('- Swipe right on timer: Reset');
         console.log('- Single tap timer: Set custom target');
         console.log('- Tap settings icon: Open settings');
+        
+        // Double check overlay visibility
+        const overlay = document.querySelector('.mobile-overlay');
+        const overlayStyle = window.getComputedStyle(overlay);
+        console.log('Overlay display:', overlayStyle.display);
+        console.log('Overlay visibility:', overlayStyle.visibility);
+        console.log('Overlay opacity:', overlayStyle.opacity);
       } else {
         console.log('🖥️ Desktop mode active');
+        console.log('Screen size:', window.innerWidth + 'x' + window.innerHeight);
         console.log('Keyboard shortcuts:');
         console.log('- Space: Pause/Resume');
         console.log('- Ctrl+R: Reset');
