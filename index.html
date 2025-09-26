@@ -403,11 +403,351 @@
         transform: scale(0.95);
       }
     }
+
+    /* Mobile overlay layer */
+    .mobile-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: -3;
+      display: none;
+    }
+
+    /* Mobile-specific styles */
+    @media screen and (max-width: 768px), 
+           screen and (max-device-width: 768px),
+           (hover: none) and (pointer: coarse) {
+      
+      .mobile-overlay {
+        display: block;
+      }
+
+      body {
+        height: 100vh;
+        height: 100dvh; /* Dynamic viewport height for better mobile support */
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+      }
+
+      .countup-container {
+        width: 90vmin;
+        height: 90vmin;
+        max-width: 400px;
+        max-height: 400px;
+      }
+
+      :root {
+        --ring-size: min(75vmin, 400px);
+        --inner-ring-size: calc(var(--ring-size) * 0.85);
+      }
+
+      .timer-value {
+        font-size: clamp(60px, 15vw, 160px);
+      }
+
+      .controls {
+        bottom: -100px;
+        gap: 16px;
+      }
+
+      .control-btn {
+        width: 56px;
+        height: 56px;
+        font-size: 18px;
+      }
+
+      .settings-panel {
+        bottom: -180px;
+        left: 5%;
+        right: 5%;
+        width: auto;
+        transform: none;
+        min-width: auto;
+        max-width: 90vw;
+      }
+
+      .settings-panel.active {
+        transform: none;
+        animation: slideUpMobile 0.3s ease-out;
+      }
+
+      @keyframes slideUpMobile {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .speed-buttons {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .speed-btn {
+        flex: 1;
+        min-width: 70px;
+        margin: 2px;
+      }
+
+      /* Particle adjustments for mobile */
+      .particle {
+        width: 3px;
+        height: 3px;
+      }
+
+      /* Better touch targets */
+      .timer-value {
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(0, 191, 255, 0.3);
+        tap-highlight-color: rgba(0, 191, 255, 0.3);
+      }
+
+      .control-btn,
+      .speed-btn {
+        -webkit-tap-highlight-color: rgba(0, 191, 255, 0.3);
+        tap-highlight-color: rgba(0, 191, 255, 0.3);
+        touch-action: manipulation;
+      }
+
+      /* Prevent zoom on input focus */
+      .setting-input {
+        font-size: 16px;
+      }
+    }
+
+    /* Extra small mobile devices */
+    @media screen and (max-width: 375px) {
+      :root {
+        --ring-size: min(80vmin, 320px);
+      }
+
+      .timer-value {
+        font-size: clamp(48px, 12vw, 120px);
+      }
+
+      .control-btn {
+        width: 48px;
+        height: 48px;
+        font-size: 16px;
+      }
+
+      .controls {
+        bottom: -80px;
+        gap: 12px;
+      }
+
+      .settings-panel {
+        bottom: -160px;
+        padding: 12px;
+      }
+
+      .speed-btn {
+        padding: 4px 8px;
+        font-size: 11px;
+        min-width: 60px;
+      }
+    }
+
+    /* Large mobile devices and small tablets */
+    @media screen and (min-width: 769px) and (max-width: 1024px) and (orientation: portrait) {
+      .mobile-overlay {
+        display: block;
+      }
+
+      :root {
+        --ring-size: min(60vmin, 500px);
+      }
+
+      .controls {
+        bottom: -120px;
+      }
+
+      .settings-panel {
+        bottom: -200px;
+        left: 10%;
+        right: 10%;
+        width: auto;
+        transform: none;
+        max-width: 600px;
+      }
+    }
+
+    /* Landscape orientation adjustments */
+    @media screen and (max-height: 600px) and (orientation: landscape) {
+      .mobile-overlay {
+        display: block;
+      }
+
+      :root {
+        --ring-size: min(70vh, 350px);
+      }
+
+      .countup-container {
+        width: 70vh;
+        height: 70vh;
+        max-width: 350px;
+        max-height: 350px;
+      }
+
+      .timer-value {
+        font-size: clamp(40px, 8vh, 100px);
+      }
+
+      .controls {
+        bottom: -60px;
+      }
+
+      .settings-panel {
+        bottom: -120px;
+        left: 5%;
+        right: 5%;
+        width: auto;
+        transform: none;
+      }
+    }
+
+    /* iOS Safari specific fixes */
+    @supports (-webkit-touch-callout: none) {
+      body {
+        height: 100vh;
+        height: -webkit-fill-available;
+      }
+
+      .mobile-overlay {
+        height: 100vh;
+        height: -webkit-fill-available;
+      }
+
+      /* Prevent rubber band scrolling */
+      .countup-container {
+        touch-action: pan-x pan-y;
+      }
+    }
+
+    /* Android Chrome specific fixes */
+    @media screen and (-webkit-min-device-pixel-ratio: 1) {
+      .mobile-overlay {
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: none; /* Better performance on Android */
+      }
+    }
+
+    /* High DPI displays */
+    @media screen and (min-resolution: 2dppx) {
+      .particle {
+        width: 2px;
+        height: 2px;
+      }
+    }
+
+    /* Additional mobile device specific styles */
+    .mobile-device .mobile-overlay {
+      display: block !important;
+    }
+
+    /* Device-specific optimizations */
+    .iphone .mobile-overlay,
+    .ipad .mobile-overlay {
+      /* iOS specific overlay adjustments */
+      background: rgba(0, 0, 0, 0.5);
+      -webkit-backdrop-filter: blur(0px);
+      backdrop-filter: blur(0px);
+    }
+
+    .android-phone .mobile-overlay,
+    .android-tablet .mobile-overlay {
+      /* Android specific overlay adjustments */
+      background: rgba(0, 0, 0, 0.5);
+      will-change: transform;
+    }
+
+    /* PWA and fullscreen mode support */
+    @media (display-mode: fullscreen),
+           (display-mode: standalone),
+           (display-mode: minimal-ui) {
+      .mobile-overlay {
+        display: block;
+      }
+
+      body {
+        height: 100vh;
+        height: 100dvh;
+      }
+    }
+
+    /* Notch and safe area support */
+    @supports (padding: max(0px)) {
+      .mobile-device body {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+      }
+
+      .mobile-device .countup-container {
+        margin-top: calc(-1 * env(safe-area-inset-top));
+        margin-bottom: calc(-1 * env(safe-area-inset-bottom));
+      }
+    }
+
+    /* Foldable devices support */
+    @media (spanning: single-fold-vertical) {
+      .mobile-overlay {
+        display: block;
+      }
+      
+      .countup-container {
+        width: 80vmin;
+        height: 80vmin;
+      }
+    }
+
+    @media (spanning: single-fold-horizontal) {
+      .mobile-overlay {
+        display: block;
+      }
+      
+      .countup-container {
+        width: 70vmin;
+        height: 70vmin;
+      }
+    }
+
+    /* Hover capability detection for hybrid devices */
+    @media (hover: hover) and (pointer: fine) {
+      /* Desktop/laptop with precise pointer */
+      .mobile-overlay {
+        display: none !important;
+      }
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+      /* Touch-only devices */
+      .mobile-overlay {
+        display: block !important;
+      }
+    }
+
+    @media (hover: hover) and (pointer: coarse) {
+      /* Devices with both touch and hover (like Surface) */
+      .mobile-overlay {
+        display: block;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="background-container"></div>
   <div class="stars"></div>
+  <div class="mobile-overlay"></div>
   
   <div class="countup-container">
     <!-- Particles -->
@@ -893,22 +1233,123 @@
     `;
     document.head.appendChild(style);
     
+    // Mobile detection utility
+    class MobileDetector {
+      static isMobile() {
+        // Check for touch capability
+        const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        
+        // Check user agent for mobile devices
+        const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+        const isMobileUA = mobileRegex.test(navigator.userAgent);
+        
+        // Check screen size
+        const isSmallScreen = window.innerWidth <= 768 || window.innerHeight <= 768;
+        
+        // Check for mobile-specific features
+        const hasMobileFeatures = 'orientation' in window || 'DeviceOrientationEvent' in window;
+        
+        return hasTouch && (isMobileUA || isSmallScreen || hasMobileFeatures);
+      }
+      
+      static getDeviceType() {
+        const userAgent = navigator.userAgent;
+        
+        if (/iPad/.test(userAgent)) return 'iPad';
+        if (/iPhone/.test(userAgent)) return 'iPhone';
+        if (/Android.*Tablet|Android.*Tab/.test(userAgent)) return 'Android Tablet';
+        if (/Android/.test(userAgent)) return 'Android Phone';
+        if (/Windows Phone/.test(userAgent)) return 'Windows Phone';
+        if (/BlackBerry/.test(userAgent)) return 'BlackBerry';
+        
+        return this.isMobile() ? 'Mobile Device' : 'Desktop';
+      }
+      
+      static optimizeForMobile() {
+        if (!this.isMobile()) return;
+        
+        // Prevent zoom on double tap
+        document.addEventListener('touchend', function(e) {
+          const now = new Date().getTime();
+          const timesince = now - MobileDetector.lastTouch;
+          if ((timesince < 600) && (timesince > 0)) {
+            e.preventDefault();
+          }
+          MobileDetector.lastTouch = now;
+        }, false);
+        
+        // Prevent context menu on long press
+        document.addEventListener('contextmenu', function(e) {
+          e.preventDefault();
+        }, false);
+        
+        // Add mobile-specific class
+        document.body.classList.add('mobile-device');
+        document.body.classList.add(this.getDeviceType().toLowerCase().replace(/\s+/g, '-'));
+        
+        // Optimize viewport for mobile
+        const viewport = document.querySelector('meta[name="viewport"]');
+        if (viewport) {
+          viewport.setAttribute('content', 
+            'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover'
+          );
+        }
+        
+        // Handle orientation changes
+        window.addEventListener('orientationchange', function() {
+          setTimeout(() => {
+            // Force recalculation of viewport units
+            document.body.style.height = window.innerHeight + 'px';
+            setTimeout(() => {
+              document.body.style.height = '100vh';
+            }, 100);
+          }, 100);
+        });
+        
+        // iOS Safari specific optimizations
+        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+          // Handle iOS Safari address bar hiding
+          window.addEventListener('resize', function() {
+            document.body.style.height = window.innerHeight + 'px';
+          });
+          
+          // Prevent rubber band scrolling
+          document.body.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+          }, { passive: false });
+        }
+      }
+    }
+    
+    MobileDetector.lastTouch = 0;
+
     // Initialize the countup timer when DOM is loaded
     document.addEventListener('DOMContentLoaded', () => {
+      // Optimize for mobile devices
+      MobileDetector.optimizeForMobile();
+      
+      // Initialize timer
       new CountupTimer();
       
       // Add visual feedback for better UX
-      console.log('🎯 Interactive Countup Timer Loaded!');
-      console.log('Keyboard shortcuts:');
-      console.log('- Space: Pause/Resume');
-      console.log('- Ctrl+R: Reset');
-      console.log('- Ctrl+S: Settings');
-      console.log('- Escape: Close settings');
-      console.log('');
-      console.log('Mobile gestures:');
-      console.log('- Double tap timer: Pause/Resume');
-      console.log('- Swipe right on timer: Reset');
-      console.log('- Click timer: Set custom target');
+      const deviceType = MobileDetector.getDeviceType();
+      console.log(`🎯 Interactive Countup Timer Loaded on ${deviceType}!`);
+      
+      if (MobileDetector.isMobile()) {
+        console.log('📱 Mobile optimizations active');
+        console.log('Mobile gestures:');
+        console.log('- Double tap timer: Pause/Resume');
+        console.log('- Swipe right on timer: Reset');
+        console.log('- Single tap timer: Set custom target');
+        console.log('- Tap settings icon: Open settings');
+      } else {
+        console.log('🖥️ Desktop mode active');
+        console.log('Keyboard shortcuts:');
+        console.log('- Space: Pause/Resume');
+        console.log('- Ctrl+R: Reset');
+        console.log('- Ctrl+S: Settings');
+        console.log('- Escape: Close settings');
+      }
     });
   </script>
 </body>
