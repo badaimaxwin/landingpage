@@ -222,16 +222,18 @@
 
     .settings-panel {
       position: absolute;
-      bottom: -200px;
+      bottom: -220px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(0, 0, 0, 0.95);
+      border: 2px solid rgba(0, 191, 255, 0.3);
       border-radius: 15px;
       padding: 20px;
       display: none;
-      backdrop-filter: blur(15px);
+      backdrop-filter: blur(20px);
       min-width: 300px;
+      z-index: 15;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
     }
 
     .settings-panel.active {
@@ -343,6 +345,8 @@
       cursor: pointer;
       transition: all 0.3s ease;
       backdrop-filter: blur(10px);
+      position: relative;
+      z-index: 6;
     }
 
     .control-btn:hover {
@@ -367,9 +371,10 @@
       }
 
       .settings-panel {
-        bottom: -180px;
+        bottom: -200px;
         min-width: 280px;
         padding: 15px;
+        z-index: 15;
       }
     }
 
