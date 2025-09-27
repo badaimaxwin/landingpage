@@ -114,6 +114,7 @@
         0 0 30px rgba(0, 191, 255, 0.4),
         inset 0 0 50px rgba(0, 0, 0, 0.6);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1;
     }
 
     .progress-ring::before {
@@ -131,6 +132,7 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
+      z-index: 3;
     }
 
     .particle {
@@ -155,6 +157,7 @@
       box-shadow: 
         0 0 25px rgba(0, 191, 255, 0.7),
         inset 0 0 15px rgba(255, 255, 255, 0.15);
+      z-index: 4;
     }
 
     @keyframes pulseAnimation {
@@ -171,7 +174,7 @@
     /* Timer display */
     .timer-display {
       position: relative;
-      z-index: 2;
+      z-index: 5;
       text-align: center;
     }
 
@@ -227,6 +230,7 @@
       flex-wrap: wrap;
       gap: 12px;
       justify-content: center;
+      z-index: 5;
     }
 
     .controls-row {
@@ -324,7 +328,7 @@
       color: var(--secondary-green);
       opacity: 0;
       pointer-events: none;
-      z-index: 10;
+      z-index: 6;
     }
 
     .milestone-celebration.active {
